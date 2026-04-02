@@ -32,7 +32,6 @@
         .logo-container img { height: 80px; width: auto; transition: 0.4s var(--ease); }
         header.active .logo-container img { height: 50px; }
 
-        /* Menu Desktop */
         .main-nav a {
             text-decoration: none; color: var(--white); font-size: 0.65rem;
             letter-spacing: 3px; text-transform: uppercase; margin-left: 35px;
@@ -40,7 +39,6 @@
         }
         .main-nav a:hover { opacity: 1; color: var(--gold); }
 
-        /* Burger Mobile */
         .burger { display: none; cursor: pointer; z-index: 1100; }
         .burger div { width: 25px; height: 2px; background: var(--white); margin: 5px; transition: 0.3s; }
 
@@ -87,17 +85,34 @@
         
         form { display: flex; flex-direction: column; gap: 10px; }
         input, textarea { padding: 15px; background: #111; border: 1px solid #222; color: white; outline: none; }
-        button { padding: 15px; background: var(--gold); border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        button { padding: 15px; background: var(--gold); border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        button:hover { background: var(--white); color: var(--black); }
 
-        /* --- RESPONSIVE ADAPTATIONS --- */
+        /* --- BOUTON WHATSAPP VIP --- */
+        .whatsapp-vip {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--black); color: var(--gold);
+            border: 1px solid var(--gold); width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: 0.5s var(--ease);
+        }
+        .whatsapp-vip:hover { background: var(--gold); color: var(--black); transform: translateY(-5px) scale(1.1); }
+        .whatsapp-vip svg { width: 30px; height: 30px; fill: currentColor; }
+        .whatsapp-vip::before {
+            content: "LIGNE PRIVÉE"; position: absolute; right: 75px; background: var(--black);
+            color: var(--gold); padding: 8px 15px; font-size: 0.6rem; letter-spacing: 2px;
+            white-space: nowrap; border: 1px solid var(--gold); opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .whatsapp-vip:hover::before { opacity: 1; visibility: visible; }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             header { height: 90px; }
             .logo-container img { height: 60px; }
             .concept, .services-grid, .steps-grid, .footer-cols { grid-template-columns: 1fr; gap: 40px; }
             .hero { padding: 0 5%; text-align: center; justify-content: center; }
             .hero-content p { margin: 0 auto 30px; }
-            
-            /* Burger Menu Logic */
             .burger { display: block; }
             .main-nav {
                 position: fixed; right: -100%; top: 0; height: 100vh; width: 80%;
@@ -106,11 +121,13 @@
             }
             .main-nav.nav-active { right: 0; }
             .main-nav a { margin: 20px 0; font-size: 1rem; }
+            .whatsapp-vip::before { display: none; }
         }
 
         @media (max-width: 480px) {
             .hero-content h1 { font-size: 2.8rem; }
             .service-card { padding: 30px 20px; }
+            .whatsapp-vip { bottom: 20px; right: 20px; width: 50px; height: 50px; }
         }
     </style>
 </head>
@@ -129,9 +146,9 @@
     </nav>
 
     <div class="burger" onclick="toggleMenu()">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
+        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
+        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
+        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
     </div>
 </header>
 
@@ -189,28 +206,12 @@
     </section>
 
     <section class="steps" id="methode">
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">L'Expérience</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center;">L'Expérience</h2>
         <div class="steps-grid">
-            <div class="step-item">
-                <div class="step-num">01</div>
-                <h4>Consultation</h4>
-                <p>Définition de la cible.</p>
-            </div>
-            <div class="step-item">
-                <div class="step-num">02</div>
-                <h4>Le Plan</h4>
-                <p>Scénarios secrets proposés.</p>
-            </div>
-            <div class="step-item">
-                <div class="step-num">03</div>
-                <h4>Le Jour J</h4>
-                <p>Coordination dans l'ombre.</p>
-            </div>
-            <div class="step-item">
-                <div class="step-num">04</div>
-                <h4>L'Émotion</h4>
-                <p>La surprise éclate.</p>
-            </div>
+            <div class="step-item"><div class="step-num">01</div><h4>Consultation</h4><p>Définition de la cible.</p></div>
+            <div class="step-item"><div class="step-num">02</div><h4>Le Plan</h4><p>Scénarios secrets proposés.</p></div>
+            <div class="step-item"><div class="step-num">03</div><h4>Le Jour J</h4><p>Coordination dans l'ombre.</p></div>
+            <div class="step-item"><div class="step-num">04</div><h4>L'Émotion</h4><p>La surprise éclate.</p></div>
         </div>
     </section>
 </main>
@@ -240,30 +241,24 @@
     </div>
 </footer>
 
+<a href="https://wa.me/243854463199?text=Bonjour%20JEHOBLESS,%20j'ai%20un%20projet%20de%20surprise%20confidentiel..." 
+   class="whatsapp-vip" target="_blank" aria-label="Contact WhatsApp">
+    <svg viewBox="0 0 24 24">
+        <path d="M12.031 6.172c-2.32 0-4.518.921-6.189 2.591-1.67 1.67-2.592 3.868-2.592 6.189 0 1.545.401 3.033 1.162 4.339l-1.236 4.516 4.622-1.213c1.25.682 2.651 1.041 4.232 1.041 2.32 0 4.518-.921 6.189-2.591s2.592-3.868 2.592-6.189c0-2.321-.921-4.519-2.592-6.189-1.671-1.671-3.869-2.592-6.189-2.592zm3.362 10.322c-.134.373-.679.712-1.077.818-.334.088-.769.157-1.246-.013-.3.107-.698-.016-2.008-.557-1.31-.54-2.155-1.874-2.222-1.962-.066-.088-.535-.711-.535-1.356 0-.645.338-.962.459-1.088.12-.126.262-.158.349-.158l.251.006c.079 0 .185-.03.289.225.105.255.358.871.389.934.032.063.053.136.01.22-.042.085-.063.136-.126.209-.063.074-.132.164-.188.221-.063.063-.129.132-.056.257.073.125.324.536.696.868.48.428.883.56 1.008.623.125.063.199.053.272-.032.074-.085.313-.366.397-.492.084-.125.168-.105.283-.063.115.042.729.344.854.407.126.063.209.094.24.147.031.053.031.304-.103.677z"/>
+    </svg>
+</a>
+
 <script>
-    // Gestion du Scroll
     window.addEventListener('scroll', () => {
         const header = document.getElementById('header');
         if (window.scrollY > 50) header.classList.add('active');
         else header.classList.remove('active');
     });
 
-    // Gestion du Menu Mobile
     function toggleMenu() {
         const nav = document.getElementById('nav-links');
         nav.classList.toggle('nav-active');
-        
-        // Animation du burger (optionnel)
-        const burger = document.querySelector('.burger');
-        burger.classList.toggle('toggle');
     }
-
-    // Fermer le menu quand on clique sur un lien (mobile)
-    document.querySelectorAll('.main-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            document.getElementById('nav-links').classList.remove('nav-active');
-        });
-    });
 </script>
 </body>
 </html>
