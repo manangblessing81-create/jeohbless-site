@@ -1,6 +1,6 @@
 services:
   - type: web # On change "static" par "web"
-    name: jeohbless-prestige
+    name: jehobless-prestige
     env: static # L'environnement reste bien "static"
     buildCommand: "" 
     staticPublishPath: "."
