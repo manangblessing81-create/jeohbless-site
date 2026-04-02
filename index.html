@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JEHOBLESS | Agence d’Organisation de Surprises Clé en Main</title>
+    <title>JEHOBLESS | Agence d’Organisation de Surprises</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,500&family=Inter:wght@100;300;600&display=swap');
 
@@ -16,11 +17,45 @@
             --ease: cubic-bezier(0.2, 1, 0.3, 1);
         }
 
+        /* --- ANIMATION D'ENTRÉE (LOADER) --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--black);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s var(--ease), visibility 1s;
+        }
+        
+        #loader img {
+            width: 150px;
+            height: auto;
+            animation: pulse-gold 2s infinite ease-in-out;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        @keyframes pulse-gold {
+            0% { transform: scale(0.95); opacity: 0.5; filter: brightness(0.8); }
+            50% { transform: scale(1); opacity: 1; filter: brightness(1.2); }
+            100% { transform: scale(0.95); opacity: 0.5; filter: brightness(0.8); }
+        }
+
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* --- BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* --- HEADER & NAVIGATION --- */
+        /* --- HEADER & NAV --- */
         header {
             position: fixed; top: 0; width: 100%; height: 120px;
             display: flex; justify-content: space-between; align-items: center;
@@ -32,26 +67,30 @@
         .logo-container img { height: 80px; width: auto; transition: 0.4s var(--ease); }
         header.active .logo-container img { height: 50px; }
 
+        .nav-wrapper { display: flex; align-items: center; }
         .main-nav a {
             text-decoration: none; color: var(--white); font-size: 0.65rem;
-            letter-spacing: 3px; text-transform: uppercase; margin-left: 35px;
+            letter-spacing: 3px; text-transform: uppercase; margin-left: 30px;
             opacity: 0.6; transition: 0.3s;
         }
         .main-nav a:hover { opacity: 1; color: var(--gold); }
 
         .burger { display: none; cursor: pointer; z-index: 1100; }
-        .burger div { width: 25px; height: 2px; background: var(--white); margin: 5px; transition: 0.3s; }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO --- */
         .hero {
             height: 100vh; display: flex; align-items: center; padding: 0 10%;
             background: linear-gradient(to right, rgba(0,0,0,0.85), transparent), 
                         url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop') center/cover;
         }
         .hero-content { max-width: 800px; }
-        .hero-content span { color: var(--gold); font-size: 0.7rem; letter-spacing: 8px; text-transform: uppercase; }
-        .hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 6rem); font-weight: 300; margin: 20px 0; line-height: 1.1; }
+        .hero-content span.subtitle { color: var(--gold); font-size: 0.7rem; letter-spacing: 8px; text-transform: uppercase; display: block; margin-bottom: 10px; }
+        .hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 300; margin: 10px 0; line-height: 1.1; min-height: 2.2em; }
         .hero-content p { font-size: 1rem; font-weight: 200; max-width: 500px; margin-bottom: 40px; opacity: 0.8; }
+        
+        /* Curseurs pour le texte dynamique */
+        .typewriter-cursor { border-right: 2px solid var(--gold); animation: blink 0.7s infinite; margin-left: 5px; }
+        @keyframes blink { 50% { border-color: transparent; } }
 
         /* --- CONCEPT --- */
         .concept { padding: 100px 10%; background: var(--white); color: var(--black); display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -63,8 +102,9 @@
         .services { padding: 100px 10%; background: var(--soft-gray); color: var(--black); }
         .section-title { text-align: center; margin-bottom: 60px; }
         .section-title h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); }
+        
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .service-card { background: white; padding: 40px; border-top: 3px solid var(--gold); transition: 0.3s; }
+        .service-card { background: white; padding: 40px; border-top: 3px solid var(--gold); transition: 0.4s var(--ease); }
         .service-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 15px; }
         .service-card ul { list-style: none; font-size: 0.9rem; color: #666; }
         .service-card ul li { margin-bottom: 10px; padding-left: 15px; position: relative; }
@@ -84,101 +124,98 @@
         .footer-cols p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
         
         form { display: flex; flex-direction: column; gap: 10px; }
-        input, textarea { padding: 15px; background: #111; border: 1px solid #222; color: white; outline: none; }
-        button { padding: 15px; background: var(--gold); border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        button:hover { background: var(--white); color: var(--black); }
+        input, textarea { padding: 15px; background: #111; border: 1px solid #222; color: white; outline: none; font-family: inherit; }
+        button { padding: 15px; background: var(--gold); border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; color: black; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* --- BOUTON WHATSAPP VIP --- */
+        /* --- BOUTON WHATSAPP --- */
         .whatsapp-vip {
             position: fixed; bottom: 30px; right: 30px;
-            background: var(--black); color: var(--gold);
-            border: 1px solid var(--gold); width: 60px; height: 60px;
+            background: var(--gold);
+            color: var(--black);
+            width: 60px; height: 60px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            text-decoration: none; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transition: 0.5s var(--ease);
+            text-decoration: none; z-index: 2000; transition: 0.5s var(--ease);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.3);
         }
-        .whatsapp-vip:hover { background: var(--gold); color: var(--black); transform: translateY(-5px) scale(1.1); }
-        .whatsapp-vip svg { width: 30px; height: 30px; fill: currentColor; }
-        .whatsapp-vip::before {
-            content: "LIGNE PRIVÉE"; position: absolute; right: 75px; background: var(--black);
-            color: var(--gold); padding: 8px 15px; font-size: 0.6rem; letter-spacing: 2px;
-            white-space: nowrap; border: 1px solid var(--gold); opacity: 0; visibility: hidden; transition: 0.3s;
-        }
-        .whatsapp-vip:hover::before { opacity: 1; visibility: visible; }
+        .whatsapp-vip:hover { transform: scale(1.1) translateY(-5px); background: var(--white); }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            header { height: 90px; }
-            .logo-container img { height: 60px; }
+            header { height: 80px; }
+            .logo-container img { height: 50px; }
             .concept, .services-grid, .steps-grid, .footer-cols { grid-template-columns: 1fr; gap: 40px; }
-            .hero { padding: 0 5%; text-align: center; justify-content: center; }
-            .hero-content p { margin: 0 auto 30px; }
-            .burger { display: block; }
+            .burger { display: flex; flex-direction: column; gap: 5px; }
             .main-nav {
-                position: fixed; right: -100%; top: 0; height: 100vh; width: 80%;
+                position: fixed; right: -100%; top: 0; height: 100vh; width: 100%;
                 background: var(--black); flex-direction: column; display: flex;
                 align-items: center; justify-content: center; transition: 0.5s;
             }
             .main-nav.nav-active { right: 0; }
-            .main-nav a { margin: 20px 0; font-size: 1rem; }
-            .whatsapp-vip::before { display: none; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 { font-size: 2.8rem; }
-            .service-card { padding: 30px 20px; }
-            .whatsapp-vip { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            .main-nav a { margin: 15px 0; font-size: 1.2rem; }
+            .hero { padding: 0 5%; text-align: center; }
+            .footer-cols { text-align: center; }
         }
     </style>
 </head>
 <body>
+
+<div id="loader">
+    <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS" id="loader-img">
+</div>
 
 <header id="header">
     <div class="logo-container">
         <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS">
     </div>
     
-    <nav class="main-nav" id="nav-links">
-        <a href="#concept">Le Concept</a>
-        <a href="#services">Nos Services</a>
-        <a href="#methode">La Méthode</a>
-        <a href="#contact">Contact</a>
-    </nav>
+    <div class="nav-wrapper">
+        <nav class="main-nav" id="nav-links">
+            <a href="#concept" onclick="toggleMenu()">Le Concept</a>
+            <a href="#services" onclick="toggleMenu()">Nos Services</a>
+            <a href="#methode" onclick="toggleMenu()">La Méthode</a>
+            <a href="#contact" onclick="toggleMenu()">Contact</a>
+        </nav>
+    </div>
 
     <div class="burger" onclick="toggleMenu()">
-        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
-        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
-        <div style="width: 25px; height: 2px; background: white; margin: 5px;"></div>
+        <div style="width: 25px; height: 2px; background: white;"></div>
+        <div style="width: 25px; height: 2px; background: white; margin: 5px 0;"></div>
+        <div style="width: 25px; height: 2px; background: white;"></div>
     </div>
 </header>
 
 <main>
     <section class="hero">
         <div class="hero-content">
-            <span>L'ART DU SECRET</span>
-            <h1>Vous avez l'idée, <br>nous avons le <i>secret.</i></h1>
-            <p>JEHOBLESS conçoit et réalise vos surprises les plus spectaculaires sans que vous n'ayez à lever le petit doigt.</p>
-            <a href="#contact" style="display: inline-block; padding: 15px 35px; background: var(--gold); color: black; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem;">Réserver une surprise</a>
+            <span class="subtitle" data-aos="fade-down">L'ART DU SECRET</span>
+            <h1>
+                Vous avez l'idée,<br>
+                nous avons <i id="dynamic-text"></i><span class="typewriter-cursor"></span>
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200">JEHOBLESS conçoit et réalise vos surprises les plus spectaculaires sans que vous n'ayez à lever le petit doigt.</p>
+            <a href="#contact" data-aos="fade-up" data-aos-delay="400" style="display: inline-block; padding: 15px 35px; background: var(--gold); color: black; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem;">Réserver une surprise</a>
         </div>
     </section>
 
     <section class="concept" id="concept">
-        <div class="concept-text">
+        <div class="concept-text" data-aos="fade-right">
             <h2>L'Émotion <br>Clé en Main.</h2>
             <p>Nous transformons vos événements ordinaires en moments extraordinaires. Chez JEHOBLESS, nous sommes les architectes de l'imprévisible.</p>
             <p><strong>Confidentialité Totale :</strong> Nous sommes les rois de la discrétion. Le secret est gardé jusqu’à la dernière seconde.</p>
         </div>
-        <div class="concept-image">
+        <div class="concept-image" data-aos="zoom-in">
             <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop" alt="Surprise">
         </div>
     </section>
 
     <section class="services" id="services">
-        <div class="section-title">
+        <div class="section-title" data-aos="fade-up">
             <h2>Nos Expertises</h2>
         </div>
+
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up">
                 <h3>01. Surprises Événementielles</h3>
                 <ul>
                     <li>Anniversaires Inoubliables</li>
@@ -186,7 +223,7 @@
                     <li>Baby Shower & Gender Reveal</li>
                 </ul>
             </div>
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
                 <h3>02. L'Effet "Whaou"</h3>
                 <ul>
                     <li>Scénarios de Complicité</li>
@@ -194,7 +231,7 @@
                     <li>Artistes & Musiciens Live</li>
                 </ul>
             </div>
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
                 <h3>03. Intentions Discrètes</h3>
                 <ul>
                     <li>Livraisons Scénarisées</li>
@@ -206,34 +243,53 @@
     </section>
 
     <section class="steps" id="methode">
-        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center;">L'Expérience</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center;" data-aos="fade-up">L'Expérience</h2>
         <div class="steps-grid">
-            <div class="step-item"><div class="step-num">01</div><h4>Consultation</h4><p>Définition de la cible.</p></div>
-            <div class="step-item"><div class="step-num">02</div><h4>Le Plan</h4><p>Scénarios secrets proposés.</p></div>
-            <div class="step-item"><div class="step-num">03</div><h4>Le Jour J</h4><p>Coordination dans l'ombre.</p></div>
-            <div class="step-item"><div class="step-num">04</div><h4>L'Émotion</h4><p>La surprise éclate.</p></div>
+            <div class="step-item" data-aos="fade-up">
+                <div class="step-num">01</div>
+                <h4>Consultation</h4>
+                <p>Définition de la cible.</p>
+            </div>
+            <div class="step-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-num">02</div>
+                <h4>Le Plan</h4>
+                <p>Scénarios secrets proposés.</p>
+            </div>
+            <div class="step-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-num">03</div>
+                <h4>Le Jour J</h4>
+                <p>Coordination dans l'ombre.</p>
+            </div>
+            <div class="step-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-num">04</div>
+                <h4>L'Émotion</h4>
+                <p>La surprise éclate.</p>
+            </div>
         </div>
     </section>
 </main>
 
 <footer id="contact">
     <div class="footer-cols">
-        <div>
+        <div data-aos="fade-up">
             <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS" style="height: 80px; margin-bottom: 20px;">
             <p>L'excellence pour des souvenirs éternels.</p>
         </div>
-        <div>
+        <div data-aos="fade-up" data-aos-delay="100">
             <h4>BUREAUX</h4>
-            <p>PARIS • DUBAÏ • KINSHASA</p>
+            <p>•CONGO KINSHASA</p>
         </div>
-        <div>
+        <div data-aos="fade-up" data-aos-delay="200">
             <h4>DEMANDE PRIVÉE</h4>
-            <form>
-                <input type="text" placeholder="Nom complet" required>
-                <input type="email" placeholder="Votre Email" required>
-                <textarea rows="3" placeholder="Votre projet..."></textarea>
-                <button type="submit">Envoyer</button>
+            <form action="https://formspree.io/f/xeeplapq" method="POST" id="contactForm">
+                <input type="text" name="nom" placeholder="Nom complet" required>
+                <input type="email" name="email" placeholder="Votre Email" required>
+                <textarea name="message" rows="3" placeholder="Votre projet..." required></textarea>
+                <button type="submit" id="submitBtn">Envoyer</button>
             </form>
+            <div id="formFeedback" style="display:none; margin-top:15px; color:var(--gold); font-size:0.8rem; text-align:center; border: 1px solid var(--gold); padding: 10px;">
+                DEMANDE ENVOYÉE AVEC SUCCÈS.
+            </div>
         </div>
     </div>
     <div style="text-align: center; font-size: 0.6rem; opacity: 0.3; letter-spacing: 2px;">
@@ -241,14 +297,65 @@
     </div>
 </footer>
 
-<a href="https://wa.me/243854463199?text=Bonjour%20JEHOBLESS,%20j'ai%20un%20projet%20de%20surprise%20confidentiel..." 
-   class="whatsapp-vip" target="_blank" aria-label="Contact WhatsApp">
-    <svg viewBox="0 0 24 24">
-        <path d="M12.031 6.172c-2.32 0-4.518.921-6.189 2.591-1.67 1.67-2.592 3.868-2.592 6.189 0 1.545.401 3.033 1.162 4.339l-1.236 4.516 4.622-1.213c1.25.682 2.651 1.041 4.232 1.041 2.32 0 4.518-.921 6.189-2.591s2.592-3.868 2.592-6.189c0-2.321-.921-4.519-2.592-6.189-1.671-1.671-3.869-2.592-6.189-2.592zm3.362 10.322c-.134.373-.679.712-1.077.818-.334.088-.769.157-1.246-.013-.3.107-.698-.016-2.008-.557-1.31-.54-2.155-1.874-2.222-1.962-.066-.088-.535-.711-.535-1.356 0-.645.338-.962.459-1.088.12-.126.262-.158.349-.158l.251.006c.079 0 .185-.03.289.225.105.255.358.871.389.934.032.063.053.136.01.22-.042.085-.063.136-.126.209-.063.074-.132.164-.188.221-.063.063-.129.132-.056.257.073.125.324.536.696.868.48.428.883.56 1.008.623.125.063.199.053.272-.032.074-.085.313-.366.397-.492.084-.125.168-.105.283-.063.115.042.729.344.854.407.126.063.209.094.24.147.031.053.031.304-.103.677z"/>
-    </svg>
+<a href="https://wa.me/243854463199?text=Bonjour%20JEHOBLESS,%20je%20souhaite%20organiser%20une%20surprise." class="whatsapp-vip" target="_blank">
+    <svg viewBox="0 0 24 24" width="32" fill="currentColor"><path d="M12.031 6.172c-2.32 0-4.518.921-6.189 2.591-1.67 1.67-2.592 3.868-2.592 6.189 0 1.545.401 3.033 1.162 4.339l-1.236 4.516 4.622-1.213c1.25.682 2.651 1.041 4.232 1.041 2.32 0 4.518-.921 6.189-2.591s2.592-3.868 2.592-6.189c0-2.321-.921-4.519-2.592-6.189-1.671-1.671-3.869-2.592-6.189-2.592zm3.362 10.322c-.134.373-.679.712-1.077.818-.334.088-.769.157-1.246-.013-.3.107-.698-.016-2.008-.557-1.31-.54-2.155-1.874-2.222-1.962-.066-.088-.535-.711-.535-1.356 0-.645.338-.962.459-1.088.12-.126.262-.158.349-.158l.251.006c.079 0 .185-.03.289.225.105.255.358.871.389.934.032.063.053.136.01.22-.042.085-.063.136-.126.209-.063.074-.132.164-.188.221-.063.063-.129.132-.056.257.073.125.324.536.696.868.48.428.883.56 1.008.623.125.063.199.053.272-.032.074-.085.313-.366.397-.492.084-.125.168-.105.283-.063.115.042.729.344.854.407.126.063.209.094.24.147.031.053.031.304-.103.677z"/></svg>
 </a>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+    // GESTION DU LOADER
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        const loaderImg = document.getElementById('loader-img');
+        
+        setTimeout(() => {
+            loaderImg.style.opacity = '1';
+        }, 300);
+
+        setTimeout(() => {
+            loader.classList.add('loader-hidden');
+            AOS.refresh();
+            // Lancement du texte dynamique après le loader
+            startTypewriter();
+        }, 2200);
+    });
+
+    // TEXTE DYNAMIQUE (TYPEWRITER EFFECT)
+    const dynamicText = document.getElementById('dynamic-text');
+    const phrases = ["le secret.", "l'expertise.", "l'émotion.", "la magie."];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    let typeSpeed = 100;
+
+    function startTypewriter() {
+        const currentPhrase = phrases[phraseIdx];
+        
+        if (isDeleting) {
+            charIdx--;
+            typeSpeed = 50;
+        } else {
+            charIdx++;
+            typeSpeed = 150;
+        }
+
+        dynamicText.textContent = currentPhrase.substring(0, charIdx);
+
+        if (!isDeleting && charIdx === currentPhrase.length) {
+            isDeleting = true;
+            typeSpeed = 2000; // Pause à la fin du mot
+        } else if (isDeleting && charIdx === 0) {
+            isDeleting = false;
+            phraseIdx = (phraseIdx + 1) % phrases.length;
+            typeSpeed = 500;
+        }
+
+        setTimeout(startTypewriter, typeSpeed);
+    }
+
+    // INITIALISATIONS
+    AOS.init({ duration: 1000, once: true });
+
     window.addEventListener('scroll', () => {
         const header = document.getElementById('header');
         if (window.scrollY > 50) header.classList.add('active');
@@ -256,9 +363,39 @@
     });
 
     function toggleMenu() {
-        const nav = document.getElementById('nav-links');
-        nav.classList.toggle('nav-active');
+        document.getElementById('nav-links').classList.toggle('nav-active');
     }
+
+    // GESTION DE L'ENVOI DU FORMULAIRE
+    const contactForm = document.getElementById('contactForm');
+    const formFeedback = document.getElementById('formFeedback');
+    const submitBtn = document.getElementById('submitBtn');
+
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        submitBtn.innerText = "ENVOI EN COURS...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(contactForm);
+
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                contactForm.style.display = "none";
+                formFeedback.style.display = "block";
+            } else {
+                throw new Error('Erreur');
+            }
+        } catch (error) {
+            submitBtn.innerText = "ERREUR. RÉESSAYER";
+            submitBtn.disabled = false;
+        }
+    });
 </script>
 </body>
 </html>
