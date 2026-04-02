@@ -1,7 +1,7 @@
 services:
-  - type: static
+  - type: web # On change "static" par "web"
     name: jeohbless-prestige
-    env: static
+    env: static # L'environnement reste bien "static"
     buildCommand: "" 
     staticPublishPath: "."
     pullRequestPreviewsEnabled: true
