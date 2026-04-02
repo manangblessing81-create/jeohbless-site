@@ -39,6 +39,22 @@
             transition: opacity 0.8s ease;
         }
 
+        /* AJOUT DU STYLE POUR LE MESSAGE DE BIENVENUE */
+        .welcome-msg {
+            color: var(--gold);
+            margin-top: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            animation: fadeInWelcome 1.5s forwards 0.5s;
+        }
+
+        @keyframes fadeInWelcome {
+            to { opacity: 0.7; }
+        }
+
         @keyframes pulse-gold {
             0% { transform: scale(0.95); opacity: 0.5; filter: brightness(0.8); }
             50% { transform: scale(1); opacity: 1; filter: brightness(1.2); }
@@ -88,7 +104,6 @@
         .hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 300; margin: 10px 0; line-height: 1.1; min-height: 2.2em; }
         .hero-content p { font-size: 1rem; font-weight: 200; max-width: 500px; margin-bottom: 40px; opacity: 0.8; }
         
-        /* Curseurs pour le texte dynamique */
         .typewriter-cursor { border-right: 2px solid var(--gold); animation: blink 0.7s infinite; margin-left: 5px; }
         @keyframes blink { 50% { border-color: transparent; } }
 
@@ -162,6 +177,7 @@
 
 <div id="loader">
     <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS" id="loader-img">
+    <div class="welcome-msg">Bienvenue sur notre site web</div>
 </div>
 
 <header id="header">
@@ -277,7 +293,7 @@
         </div>
         <div data-aos="fade-up" data-aos-delay="100">
             <h4>BUREAUX</h4>
-            <p>•CONGO KINSHASA</p>
+            <p>• KINSHASA</p>
         </div>
         <div data-aos="fade-up" data-aos-delay="200">
             <h4>DEMANDE PRIVÉE</h4>
@@ -315,7 +331,6 @@
         setTimeout(() => {
             loader.classList.add('loader-hidden');
             AOS.refresh();
-            // Lancement du texte dynamique après le loader
             startTypewriter();
         }, 2200);
     });
@@ -343,7 +358,7 @@
 
         if (!isDeleting && charIdx === currentPhrase.length) {
             isDeleting = true;
-            typeSpeed = 2000; // Pause à la fin du mot
+            typeSpeed = 2000;
         } else if (isDeleting && charIdx === 0) {
             isDeleting = false;
             phraseIdx = (phraseIdx + 1) % phrases.length;
@@ -353,7 +368,6 @@
         setTimeout(startTypewriter, typeSpeed);
     }
 
-    // INITIALISATIONS
     AOS.init({ duration: 1000, once: true });
 
     window.addEventListener('scroll', () => {
@@ -366,7 +380,6 @@
         document.getElementById('nav-links').classList.toggle('nav-active');
     }
 
-    // GESTION DE L'ENVOI DU FORMULAIRE
     const contactForm = document.getElementById('contactForm');
     const formFeedback = document.getElementById('formFeedback');
     const submitBtn = document.getElementById('submitBtn');
