@@ -39,7 +39,6 @@
             transition: opacity 0.8s ease;
         }
 
-        /* AJOUT DU STYLE POUR LE MESSAGE DE BIENVENUE */
         .welcome-msg {
             color: var(--gold);
             margin-top: 20px;
@@ -73,37 +72,87 @@
 
         /* --- HEADER & NAV --- */
         header {
-            position: fixed; top: 0; width: 100%; height: 120px;
+            position: fixed; top: 0; width: 100%; height: 100px;
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 5%; z-index: 1000; transition: 0.5s var(--ease);
             border-bottom: 1px solid var(--border);
         }
-        header.active { height: 80px; background: rgba(8, 8, 8, 0.98); backdrop-filter: blur(20px); }
+        header.active { height: 70px; background: rgba(8, 8, 8, 0.98); backdrop-filter: blur(20px); }
 
-        .logo-container img { height: 80px; width: auto; transition: 0.4s var(--ease); }
-        header.active .logo-container img { height: 50px; }
+        /* POLICE HARMONISÉE AVEC LE MENU */
+        .agency-brand {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
 
         .nav-wrapper { display: flex; align-items: center; }
         .main-nav a {
-            text-decoration: none; color: var(--white); font-size: 0.65rem;
-            letter-spacing: 3px; text-transform: uppercase; margin-left: 30px;
+            text-decoration: none; color: var(--white); font-size: 0.6rem;
+            letter-spacing: 3px; text-transform: uppercase; margin-left: 25px;
             opacity: 0.6; transition: 0.3s;
         }
         .main-nav a:hover { opacity: 1; color: var(--gold); }
 
         .burger { display: none; cursor: pointer; z-index: 1100; }
 
-        /* --- HERO --- */
+        /* --- HERO (AJUSTÉ POUR ÉVITER LE DÉBORDEMENT PC) --- */
         .hero {
-            height: 100vh; display: flex; align-items: center; padding: 0 10%;
+            height: 100vh; 
+            min-height: 700px; /* Sécurité pour petits écrans PC */
+            display: flex; 
+            align-items: center; 
+            padding: 0 10%;
             background: linear-gradient(to right, rgba(0,0,0,0.85), transparent), 
                         url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop') center/cover;
         }
-        .hero-content { max-width: 800px; }
-        .hero-content span.subtitle { color: var(--gold); font-size: 0.7rem; letter-spacing: 8px; text-transform: uppercase; display: block; margin-bottom: 10px; }
-        .hero-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 300; margin: 10px 0; line-height: 1.1; min-height: 2.2em; }
-        .hero-content p { font-size: 1rem; font-weight: 200; max-width: 500px; margin-bottom: 40px; opacity: 0.8; }
+        .hero-content { 
+            max-width: 900px; 
+            padding-top: 60px; /* Évite de coller au header */
+        }
+        .hero-content span.subtitle { 
+            color: var(--gold); 
+            font-size: 0.7rem; 
+            letter-spacing: 8px; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 15px; 
+        }
+        .hero-content h1 { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: clamp(2.5rem, 6vw, 4.8rem); /* Taille max légèrement réduite pour PC */
+            font-weight: 300; 
+            margin: 10px 0 20px 0; 
+            line-height: 1.1; 
+        }
+        .hero-content p { 
+            font-size: 0.95rem; 
+            font-weight: 200; 
+            max-width: 500px; 
+            margin-bottom: 35px; 
+            opacity: 0.8; 
+        }
         
+        /* BOUTONS MINIMALISTES */
+        .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+        
+        .btn-primary { 
+            display: inline-block; padding: 10px 20px; background: var(--gold); 
+            color: black; text-decoration: none; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.6rem; transition: 0.3s;
+        }
+        .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+
+        .btn-outline { 
+            display: inline-block; padding: 10px 20px; background: transparent; 
+            color: var(--white); border: 1px solid var(--gold); text-decoration: none; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.6rem; transition: 0.3s;
+        }
+        .btn-outline:hover { background: rgba(197, 160, 89, 0.1); transform: translateY(-2px); }
+
         .typewriter-cursor { border-right: 2px solid var(--gold); animation: blink 0.7s infinite; margin-left: 5px; }
         @keyframes blink { 50% { border-color: transparent; } }
 
@@ -158,7 +207,7 @@
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             header { height: 80px; }
-            .logo-container img { height: 50px; }
+            .agency-brand { font-size: 1rem; letter-spacing: 4px; }
             .concept, .services-grid, .steps-grid, .footer-cols { grid-template-columns: 1fr; gap: 40px; }
             .burger { display: flex; flex-direction: column; gap: 5px; }
             .main-nav {
@@ -169,6 +218,7 @@
             .main-nav.nav-active { right: 0; }
             .main-nav a { margin: 15px 0; font-size: 1.2rem; }
             .hero { padding: 0 5%; text-align: center; }
+            .hero-btns { justify-content: center; }
             .footer-cols { text-align: center; }
         }
     </style>
@@ -181,9 +231,7 @@
 </div>
 
 <header id="header">
-    <div class="logo-container">
-        <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS">
-    </div>
+    <div class="agency-brand">JEHOBLESS</div>
     
     <div class="nav-wrapper">
         <nav class="main-nav" id="nav-links">
@@ -210,7 +258,11 @@
                 nous avons <i id="dynamic-text"></i><span class="typewriter-cursor"></span>
             </h1>
             <p data-aos="fade-up" data-aos-delay="200">JEHOBLESS conçoit et réalise vos surprises les plus spectaculaires sans que vous n'ayez à lever le petit doigt.</p>
-            <a href="#contact" data-aos="fade-up" data-aos-delay="400" style="display: inline-block; padding: 15px 35px; background: var(--gold); color: black; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem;">Réserver une surprise</a>
+            
+            <div class="hero-btns" data-aos="fade-up" data-aos-delay="400">
+                <a href="#contact" class="btn-primary">Réserver une surprise</a>
+                <a href="https://jehobless-tarifs.onrender.com" target="_blank" class="btn-outline">Découvrir nos Packages</a>
+            </div>
         </div>
     </section>
 
@@ -288,7 +340,7 @@
 <footer id="contact">
     <div class="footer-cols">
         <div data-aos="fade-up">
-            <img src="ChatGPT Image 2 avr. 2026, 00_51_39.png" alt="JEHOBLESS" style="height: 80px; margin-bottom: 20px;">
+            <div class="agency-brand" style="margin-bottom: 20px;">JEHOBLESS</div>
             <p>L'excellence pour des souvenirs éternels.</p>
         </div>
         <div data-aos="fade-up" data-aos-delay="100">
@@ -319,15 +371,11 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    // GESTION DU LOADER
+    // LOADER
     window.addEventListener('load', () => {
         const loader = document.getElementById('loader');
         const loaderImg = document.getElementById('loader-img');
-        
-        setTimeout(() => {
-            loaderImg.style.opacity = '1';
-        }, 300);
-
+        setTimeout(() => { loaderImg.style.opacity = '1'; }, 300);
         setTimeout(() => {
             loader.classList.add('loader-hidden');
             AOS.refresh();
@@ -335,36 +383,18 @@
         }, 2200);
     });
 
-    // TEXTE DYNAMIQUE (TYPEWRITER EFFECT)
+    // TYPEWRITER
     const dynamicText = document.getElementById('dynamic-text');
     const phrases = ["le secret.", "l'expertise.", "l'émotion.", "la magie."];
-    let phraseIdx = 0;
-    let charIdx = 0;
-    let isDeleting = false;
-    let typeSpeed = 100;
+    let phraseIdx = 0, charIdx = 0, isDeleting = false, typeSpeed = 100;
 
     function startTypewriter() {
         const currentPhrase = phrases[phraseIdx];
-        
-        if (isDeleting) {
-            charIdx--;
-            typeSpeed = 50;
-        } else {
-            charIdx++;
-            typeSpeed = 150;
-        }
-
+        if (isDeleting) { charIdx--; typeSpeed = 50; } 
+        else { charIdx++; typeSpeed = 150; }
         dynamicText.textContent = currentPhrase.substring(0, charIdx);
-
-        if (!isDeleting && charIdx === currentPhrase.length) {
-            isDeleting = true;
-            typeSpeed = 2000;
-        } else if (isDeleting && charIdx === 0) {
-            isDeleting = false;
-            phraseIdx = (phraseIdx + 1) % phrases.length;
-            typeSpeed = 500;
-        }
-
+        if (!isDeleting && charIdx === currentPhrase.length) { isDeleting = true; typeSpeed = 2000; } 
+        else if (isDeleting && charIdx === 0) { isDeleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; typeSpeed = 500; }
         setTimeout(startTypewriter, typeSpeed);
     }
 
@@ -388,22 +418,17 @@
         e.preventDefault();
         submitBtn.innerText = "ENVOI EN COURS...";
         submitBtn.disabled = true;
-
         const formData = new FormData(contactForm);
-
         try {
             const response = await fetch(contactForm.action, {
                 method: 'POST',
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             });
-
             if (response.ok) {
                 contactForm.style.display = "none";
                 formFeedback.style.display = "block";
-            } else {
-                throw new Error('Erreur');
-            }
+            } else { throw new Error('Erreur'); }
         } catch (error) {
             submitBtn.innerText = "ERREUR. RÉESSAYER";
             submitBtn.disabled = false;
